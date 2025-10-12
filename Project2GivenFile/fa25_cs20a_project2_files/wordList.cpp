@@ -26,6 +26,8 @@
 #include"self_sabotage.h"
 #else
 // Do not include any other libraries
+#define MAKE_MEMBERS_PUBLIC
+
 #include"wordlist.h"
 #include<iostream>
 #include<cstring>
@@ -39,27 +41,33 @@ using std::strlen;
 
 // Function:  resize
 int Wordlist::resize(int amt) {
-	
+
 	int newAllocated = allocated + amt;
-	char** newList = new char* [newAllocated];	//creates new dynamically allocated list with the increased allocated amount
 
 	//EDGE CASES
-	if (size == 0 && newAllocated < 0) {
-		return -2;
+	
+	if (newAllocated <= 0) {        // treat 0 or negative as invalid when size==0
+		if (size == 0) { return -2; }
+		else { return -1; }
 	}
-	if (newAllocated < size) {
-		return -1;
+	if (newAllocated < size) { return -1; }
+
+	char** newList = new char* [newAllocated];	//creates new dynamically allocated list with the increased allocated amount
+
+	if (list != nullptr) {
+		for (int i = 0; i < size; i++) {	//loops through size and copies contents of old list to new list
+			newList[i] = list[i];
+		}
 	}
 
-	for (int i = 0; i < size; i++) {	//loops through size and copies contents of old list to new list
-		newList[i] = list[i];
+	for (int i = size; i < newAllocated; i++) { //makes the remaining new list slots empty
+		newList[i] = new char[20];	//allocate memory for strings
+		newList[i][0] = 0;	//make them empty
 	}
 
-	for (int i = size; i < newAllocated; i++) {//make new slots nullptr
-		newList[i] = nullptr;
-	}
-
+	if (list != nullptr) {
 	delete[] list;	//free memory of old list
+	}
 
 	list = newList;
 	allocated = newAllocated;
@@ -77,9 +85,10 @@ Wordlist::Wordlist(const int cap) {
 	else {
 		allocated = cap;	//make allocated = input (max)
 		list = new char*[allocated];	//create dynamic list with allocated array
-		for (int i = 0; i < allocated; i++)
-			list[i] = nullptr;	//empties everything in list
-
+		for (int i = 0; i < allocated; i++) {
+			list[i] = new char[20];	//allows 20 characters in each list including one \0
+			list[i][0] = 0;	//each word inside list put empty string
+		}
 	}
 }
 
@@ -177,16 +186,6 @@ int	Wordlist::stored() const {
 	if (list == nullptr) { return 0; }
 
 	return size;
-
-	/*
-	int wordCount = 0;
-	for (int i = 0; i < size; i++) {
-		if (list[i] != nullptr) {
-			wordCount++;
-		}
-	}
-	return wordCount; 
-	*/
 }
 
 // Function: space
