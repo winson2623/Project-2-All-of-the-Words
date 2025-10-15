@@ -27,7 +27,7 @@
 */
 
 // Choose which run to compile
-#define UNITTESTS //RUN0 RUN1 RUN2 RUN3 RUN4 RUN5
+#define RUN1 //RUN0 RUN1 RUN2 RUN3 RUN4 RUN5
 
 #ifdef UNITTESTS
 
@@ -143,16 +143,24 @@ using std::endl;
 
 int main() {
 
-	Wordlist wordlist(5);
+	//Wordlist wordlist(5);
 
 	// Assuming we made our member variables public:
-	cout << "Count: " << wordlist.size << endl; // Expect 0
+	//cout << "Count: " << wordlist.size << endl; // Expect 0
 
-	cout << "Capacity: " << wordlist.allocated << endl; // Expect 5
+	//cout << "Capacity: " << wordlist.allocated << endl; // Expect 5
 
-
-	
-	return 0;
+	Wordlist neverwhere(5);
+	neverwhere.insert(0, "Richard");
+	neverwhere.insert(0, "Door");
+	neverwhere.insert(0, "Carabas");
+	neverwhere.insert(0, "Islington");
+	neverwhere.insert(0, "Abbot");
+	cout << "Before display: ";
+	neverwhere.display();	// displays "Abbot Islington Carabas door Richard"
+	neverwhere.sort(0);
+	cout  << "\nAfter display: ";
+	neverwhere.display(); // displays "Richard Door Carabas Islington Abbot"
 
 } 
 #elif defined RUN2 

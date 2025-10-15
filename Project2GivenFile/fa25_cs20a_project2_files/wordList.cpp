@@ -282,20 +282,47 @@ int	Wordlist::interleave(const Wordlist &other){
 
 // Function: search
 int Wordlist::search(const char word[]) const {
+	if (list == nullptr) { return -2; }
 
-	// --- TODO --- 
-	int dummyreturnval = -9000;
-	return dummyreturnval;
+	for (int i = 0; i < size; i++) {
+		for (int j = 0; j < strlen(list[i]); ++j) {
+			list[i][j] = tolower(list[i][j]);
+		}// THIS CHANGES THE ORIGINAL LIST TO ALL LOWERCASE, create new memory and copy it to temp, to prevent overriding INFO
 
+		int result = strcmp(list[i], word);
+		if (result == 0) {
+			return i;
+		}
+	}
+	return -1;
 }
 
 // Funtion: sort
 int	Wordlist::sort(const int mode) {
-  
-	// --- TODO --- 
-	int dummyreturnval = -9000;
-	return dummyreturnval;
+	if (list == nullptr) { return -2; }
 
+	if (mode == 0) {
+		if (list[0] >= list[size - 1]) {
+			mode == 1;
+		}
+		else {
+			mode == -1;
+		}
+	}
+
+	if (mode == 1) {
+		return 1;
+	}
+
+	if (mode == -1) {
+		for (int i = 0; i < size/2; ++i) {	//starts looping from 0 to center
+			char* temp = list[i];
+			list[i] = list[size - 1 - i];	//put end of list item to the front
+			list[size - 1 - i] = temp;		//puts the temp to the back of the list
+
+		}
+	}
+	return 1;
 }
 // Funtion: yoink
 int	Wordlist::yoink(const char word[], Wordlist &other) {
