@@ -150,17 +150,22 @@ int main() {
 
 	//cout << "Capacity: " << wordlist.allocated << endl; // Expect 5
 
-	Wordlist neverwhere(5);
-	neverwhere.insert(0, "Richard");
-	neverwhere.insert(0, "Door");
-	neverwhere.insert(0, "Carabas");
-	neverwhere.insert(0, "Islington");
-	neverwhere.insert(0, "Abbot");
-	cout << "Before display: ";
-	neverwhere.display();	// displays "Abbot Islington Carabas door Richard"
-	neverwhere.sort(0);
-	cout  << "\nAfter display: ";
-	neverwhere.display(); // displays "Richard Door Carabas Islington Abbot"
+	Wordlist exteam(4);
+	exteam.insert(0, "shoot");
+	exteam.insert(0, "knuckle");
+	exteam.insert(0, "kilua");
+	exteam.insert(0, "gon"); //size 4, allocated 4
+
+	Wordlist chimera(4);
+	chimera.insert(0, "cheetu");
+	chimera.insert(0, "flutter");
+	chimera.insert(0, "leol");
+	chimera.insert(0, "ikalgo");
+	chimera.insert(0, "welfin");// size 5, allocated 8
+
+	exteam.yoink("ikalgo", chimera);
+	exteam.display(); // display ¡§gon kilua knuckle shoot ikalgo\n¡¨
+	chimera.display(); // display ¡§welfin leol flutter cheetu\n¡¨
 
 } 
 #elif defined RUN2 

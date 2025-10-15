@@ -301,34 +301,77 @@ int Wordlist::search(const char word[]) const {
 int	Wordlist::sort(const int mode) {
 	if (list == nullptr) { return -2; }
 
-	if (mode == 0) {
-		if (list[0] >= list[size - 1]) {
-			mode == 1;
+	if (size == 1) { return 0; }
+
+	bool ascending = false;
+	if (mode == 1) { ascending = true; }
+	else if (mode == -1) { ascending = false; }
+	else if (mode == 0) { 
+		if (strcmp(list[0],list[size - 1]) <= 0) {
+			ascending = true;
 		}
 		else {
-			mode == -1;
+			ascending = false;
 		}
 	}
 
-	if (mode == 1) {
-		return 1;
-	}
 
-	if (mode == -1) {
-		for (int i = 0; i < size/2; ++i) {	//starts looping from 0 to center
-			char* temp = list[i];
-			list[i] = list[size - 1 - i];	//put end of list item to the front
-			list[size - 1 - i] = temp;		//puts the temp to the back of the list
-
+	for (int i = 0; i < size - 1; ++i) {
+		for (int j = i + 1; j < size - 1; ++j) {
+			if (ascending) {
+				if (strcmp(list[i], list[j]) > 0) {
+					char* temp = list[i];
+					list[i] = list[j];
+					list[j] = temp;
+				}
+			}
+			else {
+				if (strcmp(list[i], list[j]) < 0) {
+					char* temp = list[i];
+					list[i] = list[j];
+					list[j] = temp;
+				}
+			}
 		}
 	}
+	
 	return 1;
 }
 // Funtion: yoink
 int	Wordlist::yoink(const char word[], Wordlist &other) {
-	
-	// --- TODO --- 
-	int dummyreturnval = -9000;
-	return dummyreturnval;
+	if (other.list == nullptr || other.size == 0) {
+		return -1;
+	}
+
+	//loop through other list and strcmp to locate first occurance of word, return -1 if not found
+	for (int i = 0; i < other.size; i++) {
+		if (strcmp(other.list[i], word) == 0) {
+			bool resized = false;
+			//check if enough allocated space in current, if yes insert and return 0, if no then resize, insert then return 1
+			if (allocated > size) {
+				insert(size, other.list[i]);
+				resized = false;
+			}
+			else {
+				resize(size + 1);
+				insert(size, other.list[i]);
+				resized = true;
+			}
+
+			for (int j = i; j < other.size - 1; j++) {
+				other.list[j] = other.list[j + 1];
+			}
+			other.size--;
+			other.list[other.size] = nullptr;
+
+			if (resized == true) { return 1;}
+			else { return 0; }
+		}
+	}
+	return -1;
+	//shift elements in other list to fill the gap after removing the word
+	//other.list[i] = other.list[i + 1];
+	//decrease other.size by 1 
+	//other.size--;
 
 }
