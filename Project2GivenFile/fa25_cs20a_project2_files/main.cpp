@@ -39,7 +39,7 @@ using namespace ZeroRelative;
 
 int main() {
 	
-	runTest(test_resize, 2);
+	runTest(test_resize, 3);
 
 	//runTest(test_ctor, 0);
 	//runTest(test_ctor, 1);
@@ -155,14 +155,14 @@ int main() {
 	exteam.insert(0, "knuckle");
 	exteam.insert(0, "kilua");
 	exteam.insert(0, "gon"); //size 4, allocated 4
-
+	exteam.checkVar();
 	Wordlist chimera(4);
 	chimera.insert(0, "cheetu");
 	chimera.insert(0, "flutter");
 	chimera.insert(0, "leol");
 	chimera.insert(0, "ikalgo");
 	chimera.insert(0, "welfin");// size 5, allocated 8
-
+	chimera.checkVar();
 	exteam.yoink("ikalgo", chimera);
 	exteam.display(); // display ¡§gon kilua knuckle shoot ikalgo\n¡¨
 	chimera.display(); // display ¡§welfin leol flutter cheetu\n¡¨
